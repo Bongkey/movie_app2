@@ -30,7 +30,7 @@ export default class extends React.Component {
       });
     } catch {
       this.setState({
-        error: "Can't find TV information",
+        error: 'TV 정보를 찾을 수 없습니다.',
       });
     } finally {
       this.setState({
@@ -41,7 +41,6 @@ export default class extends React.Component {
 
   render() {
     const { topRated, popular, airingToday, error, loading } = this.state;
-    console.log(this.state);
     return (
       <TVPresenter
         topRated={topRated}
