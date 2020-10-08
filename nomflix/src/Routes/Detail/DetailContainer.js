@@ -6,13 +6,13 @@ export default class extends React.Component {
   constructor(props) {
     super(props);
     const {
-      location: { pathName },
+      location: { pathname },
     } = props;
     this.state = {
       result: null,
       error: null,
       loading: true,
-      isMovie: pathName.includes('/movie/'),
+      isMovie: pathname.includes('/movie/'),
     };
   }
 
@@ -34,11 +34,10 @@ export default class extends React.Component {
     let result = null;
     try {
       if (isMovie) {
-        result = await moviesApi.movieDetail(parsedId);
+        ({ data: result } = await moviesApi.movieDetail(parsedId));
       } else {
-        result = await tvApi.showDetail(parsedId);
+        ({ data: result } = await tvApi.showDetail(parsedId));
       }
-      console.log(result);
     } catch {
       this.setState({ error: "Can't find anything" });
     } finally {

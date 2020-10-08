@@ -14,4 +14,4 @@
 - [x] Airing Today (TV)
 - [x] TV Show Detail
 - [x] Movie Detail
-- [ ] Search (Movie,TV)
+- [x] Search (Movie,TV)
