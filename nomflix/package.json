@@ -27,7 +27,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "homepage": "https://Bongkey.github.io/nomflix",
+  "homepage": "https://Bongkey.github.io/movie_app2",
   "browserslist": {
     "production": [
       ">0.2%",
