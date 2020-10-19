@@ -4,7 +4,7 @@ const api = axios.create({
   baseURL: 'https://api.themoviedb.org/3/',
   params: {
     api_key: '1654a5c5d84d36b183be7edf2bd91e8c',
-    language: 'ko',
+    language: 'en-US',
   },
 });
 
@@ -18,6 +18,7 @@ export const moviesApi = {
         append_to_response: 'videos',
       },
     }),
+  movieCredit: (id) => api.get(`movie/${id}/credits`),
   search: (term) =>
     api.get('search/movie', {
       params: {
@@ -36,6 +37,7 @@ export const tvApi = {
         append_to_response: 'videos',
       },
     }),
+  showCredit: (id) => api.get(`tv/${id}/credits`),
   search: (term) =>
     api.get('search/tv', {
       params: {

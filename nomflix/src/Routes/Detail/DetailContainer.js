@@ -10,6 +10,7 @@ export default class extends React.Component {
     } = props;
     this.state = {
       result: null,
+      credits: null,
       error: null,
       loading: true,
       isMovie: pathname.includes('/movie/'),
@@ -32,20 +33,30 @@ export default class extends React.Component {
 
     //Search Movie or TV
     let result = null;
+    let credits = null;
     try {
       if (isMovie) {
         ({ data: result } = await moviesApi.movieDetail(parsedId));
+        ({ data: credits } = await moviesApi.movieCredit(parsedId));
       } else {
         ({ data: result } = await tvApi.showDetail(parsedId));
+        ({ data: credits } = await tvApi.showCredit(parsedId));
       }
     } catch {
       this.setState({ error: '결과를 찾을 수 없습니다.' });
     } finally {
-      this.setState({ loading: false, result });
+      this.setState({ loading: false, result, credits });
     }
   }
   render() {
-    const { result, error, loading } = this.state;
-    return <DetailPresenter result={result} error={error} loading={loading} />;
+    const { result, credits, error, loading } = this.state;
+    return (
+      <DetailPresenter
+        result={result}
+        credits={credits}
+        error={error}
+        loading={loading}
+      />
+    );
   }
 }

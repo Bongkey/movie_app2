@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  height: 100wh;
+  height: 100vh;
   width: 100vw;
   display: flex;
   justify-content: center;
-  font-size: 32px;
+  align-items: center;
+  font-size: 100px;
   margin-top: 20px;
 `;
 

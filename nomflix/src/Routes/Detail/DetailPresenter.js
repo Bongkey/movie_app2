@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Loader from '../../Components/Loader';
 import { Helmet } from 'react-helmet';
+import Logo from '../../Components/Logo';
+import Trailer from '../../Components/Trailer';
+import Credit from '../../Components/Credit';
 
 const Container = styled.div`
   height: calc(100vh - 50px);
@@ -16,7 +19,7 @@ const Backdrop = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 200%;
   background-image: url(${(props) => props.bgImage});
   background-position: center center;
   background-size: cover;
@@ -34,12 +37,13 @@ const Content = styled.div`
 `;
 
 const Cover = styled.div`
-  width: 30%;
+  width: 40%;
   height: 100%;
   background-image: url(${(props) => props.bgImage});
   background-position: center center;
   background-size: cover;
   border-radius: 5px;
+  margin-right: 20px;
 `;
 
 const Data = styled.div`
@@ -47,16 +51,32 @@ const Data = styled.div`
   margin-left: 10px;
 `;
 
+const TitleAndLinkContainer = styled.div`
+  display: flex;
+`;
+
 const Title = styled.h3`
-  font-size: 32px;
+  font-size: 40px;
+  margin-right: 20px;
   margin-bottom: 10px;
 `;
 
+const IMDBLink = styled.a`
+  width: 80px;
+  height: 40px;
+  display: block;
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/69/IMDB_Logo_2016.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+`;
 const ItemContainer = styled.div`
   margin: 20px 0px;
 `;
 
-const Item = styled.span``;
+const Item = styled.span`
+  font-size: 22px;
+`;
 
 const Divider = styled.span`
   font-size: 15px;
@@ -65,13 +85,72 @@ const Divider = styled.span`
 `;
 
 const Overview = styled.p`
-  font-size: 14px;
-  opacity: 0.7;
+  font-size: 18px;
+  opacity: 0.9;
   line-height: 1.8;
   width: 70%;
 `;
 
-const DetailPresenter = ({ result, error, loading }) =>
+const LogoContainer = styled.div`
+  margin: 20px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const VideoContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 230px;
+  padding-bottom: 20%;
+  margin-right: 450px;
+`;
+
+const VideosContainer = styled.div`
+  margin-top: 40px;
+  display: flex;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #2f3542;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }
+`;
+
+const ActorsContainer = styled.div`
+  margin: 20px 0px;
+  width: 100%;
+  height: 330px;
+  display: grid;
+  grid-template-rows: repeat(1, 240px);
+  grid-template-columns: repeat(100, 1fr);
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #2f3542;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }
+`;
+
+const DetailPresenter = ({ key, result, credits, error, loading }) =>
   loading ? (
     <>
       <Helmet>
@@ -99,11 +178,17 @@ const DetailPresenter = ({ result, error, loading }) =>
           }
         />
         <Data>
-          <Title>
-            {result.original_title
-              ? result.original_title
-              : result.original_name}
-          </Title>
+          <TitleAndLinkContainer>
+            <Title>
+              {result.original_title
+                ? result.original_title
+                : result.original_name}
+            </Title>
+            <IMDBLink
+              href={`https://imdb.com/title/${result.imdb_id}`}
+            ></IMDBLink>
+          </TitleAndLinkContainer>
+
           <ItemContainer>
             <Item>
               {result.release_date
@@ -112,7 +197,7 @@ const DetailPresenter = ({ result, error, loading }) =>
             </Item>
             <Divider>·</Divider>
             <Item>
-              {result.runtime ? result.runtime : result.episode_run_time}분
+              {result.runtime ? result.runtime : result.episode_run_time}min
             </Item>
             <Divider>·</Divider>
             <Item>
@@ -124,7 +209,28 @@ const DetailPresenter = ({ result, error, loading }) =>
                 )}
             </Item>
           </ItemContainer>
+          <LogoContainer>
+            {result.production_companies &&
+              result.production_companies
+                .filter((company) => {
+                  return company.logo_path !== null;
+                })
+                .map((company) => <Logo key={company.id} company={company} />)}
+          </LogoContainer>
           <Overview>{result.overview}</Overview>
+          <ActorsContainer>
+            {credits.cast.map((actor) => (
+              <Credit actor={actor}></Credit>
+            ))}
+          </ActorsContainer>
+          <VideosContainer>
+            {result.videos.results &&
+              result.videos.results.map((result, index) => (
+                <VideoContainer key={result.id}>
+                  <Trailer key={result.id} video={result.key} />
+                </VideoContainer>
+              ))}
+          </VideosContainer>
         </Data>
       </Content>
     </Container>

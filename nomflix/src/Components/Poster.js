@@ -9,7 +9,7 @@ const Container = styled.div`
 
 const Image = styled.div`
   background-image: url(${(props) => props.bgUrl});
-  height: 180px;
+  height: 300px;
   background-size: cover;
   border-radius: 4px;
   background-position: center center;
@@ -39,11 +39,12 @@ const ImageContainer = styled.div`
 
 const Title = styled.span`
   display: block;
+  font-size: 22px;
   margin-bottom: 3px;
 `;
 
 const Year = styled.span`
-  font-size: 10px;
+  font-size: 20px;
   color: rgba(255, 255, 255, 0.5);
 `;
 
@@ -66,7 +67,9 @@ const Poster = ({ id, imageUrl, title, rating, year, isMovie = false }) => (
         </Rating>
       </ImageContainer>
       <Title>
-        {title.length > 18 ? `${title.substring(0, 18)}...` : title}
+        {
+          /* {title.length > 18 ? `${title.substring(0, 18)}...` : title} */ title
+        }
       </Title>
       <Year>{year}</Year>
     </Container>
